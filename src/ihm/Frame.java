@@ -53,7 +53,7 @@ public class Frame extends JFrame
 
 		this.panelContenue.setLayout( new FlowLayout() );
 
-		switch ( panel ) //Suivant l'action demander ca place le bon panel
+		switch ( panel ) //Suivant l'action demandé, ca place le bon panel
 		{
 			case "Argent"      ->{ this.panelContenue.add( this.panelArgent      ) ; }
 			case "Distance"    ->{ this.panelContenue.add( this.panelDistance    ) ; }
