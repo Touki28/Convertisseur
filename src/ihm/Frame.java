@@ -19,16 +19,16 @@ public class Frame extends JFrame
 
 	public Frame( Controleur ctrl )
 	{
-		this.setTitle   ("Convertisseur");
-		this.setSize    ( 750, 500 );
-		this.setLocation(  20,  20 );
+		this.setTitle   ( "Convertisseur" );
+		this.setSize    ( 750, 500        );
+		this.setLocation(  20,  20        );
 
 		/*-------------------------------*/
 		/* Création des composants       */
 		/*-------------------------------*/
 		this.panelContenue = new JPanel( new GridLayout( 3, 1 ) );
 
-		this.panelMenu        = new PanelMenu          ( ctrl );
+		this.panelMenu        = new PanelMenu          ( ctrl                                                                 );
 		this.panelArgent      = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Argent"      );
 		this.panelDistance    = new PanelConvertisseur ( ctrl, "Miles &lt;=&gt; KiloMètre"                    , "Distance"    );
 		this.panelTemperature = new PanelConvertisseur ( ctrl, "Celsius &lt;=&gt; Fahrenheit &lt;=&gt; Kelvin", "Temperature" );
@@ -48,11 +48,12 @@ public class Frame extends JFrame
 
 	public void panelConvertisseur( String panel )
 	{
+		// Reset le contenue du panelPrincipale
 		this.panelContenue.removeAll();
 
 		this.panelContenue.setLayout( new FlowLayout() );
 
-		switch ( panel )
+		switch ( panel ) //Suivant l'action demander ca place le bon panel
 		{
 			case "Argent"      ->{ this.panelContenue.add( this.panelArgent      ) ; }
 			case "Distance"    ->{ this.panelContenue.add( this.panelDistance    ) ; }
@@ -69,6 +70,7 @@ public class Frame extends JFrame
 		this.majContenue();
 	}
 
+	// Met a jour le panelPrincipale
 	public void majContenue()
 	{
 		this.panelContenue.revalidate();
