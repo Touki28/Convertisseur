@@ -29,10 +29,10 @@ public class Frame extends JFrame
 		this.panelContenue = new JPanel( new GridLayout( 3, 1 ) );
 
 		this.panelMenu        = new PanelMenu          ( ctrl );
-		this.panelArgent      = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs", "Argent" );
-		this.panelDistance    = new PanelConvertisseur ( ctrl, "Miles &lt;=&gt; KiloMètre", "Distance", true );
+		this.panelArgent      = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Argent"      );
+		this.panelDistance    = new PanelConvertisseur ( ctrl, "Miles &lt;=&gt; KiloMètre"                    , "Distance"    );
 		this.panelTemperature = new PanelConvertisseur ( ctrl, "Celsius &lt;=&gt; Fahrenheit &lt;=&gt; Kelvin", "Temperature" );
-		this.panelVitesse     = new PanelConvertisseur ( ctrl, "Km/h &lt;=&gt; m/s &lt;=&gt; Noeuds", "Vitesse" );
+		this.panelVitesse     = new PanelConvertisseur ( ctrl, "Km/h &lt;=&gt; m/s &lt;=&gt; Noeuds"          , "Vitesse"     );
 
 		/*-------------------------------*/
 		/* Positionnement des composants */

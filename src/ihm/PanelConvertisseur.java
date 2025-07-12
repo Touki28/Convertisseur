@@ -23,8 +23,13 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 
 	public PanelConvertisseur( Controleur ctrl, String titre, String type )
 	{
-		JPanel panelSaisies, panelBas;
-		JLabel lblTitre;
+		String[]    categories;
+		ButtonGroup btgType;
+		JPanel      panelChoix, panelSaisies, panelBas, panelTmp;
+		JLabel      lblTitre;
+
+		// si pas de categories alors categories = null
+		categories = Controleur.getCategories( type );
 
 		this.ctrl = ctrl;
 
@@ -34,9 +39,28 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		/* Création des composants       */
 		/*-------------------------------*/
 
-		lblTitre       = new JLabel( "<html><h1>" + titre + "</h1></html>" , SwingConstants.CENTER );
-
+		lblTitre       = new JLabel ( "<html><h1>" + titre + "</h1></html>" , SwingConstants.CENTER );
 		this.btnRetour = new JButton( "Retour" );
+
+		/* --------- Catégories -------- */
+		if ( categories != null )
+		{
+			btgType    = new ButtonGroup();
+			this.ensRb = new JRadioButton[ categories.length ];
+
+			for( int cpt = 0; cpt < this.ensRb.length; cpt++ )
+				this.ensRb[cpt] = new JRadioButton( categories[cpt] );
+
+			if ( this.ensRb.length > 0 ) this.ensRb[0].setSelected( true );
+
+			for ( JRadioButton rb : this.ensRb )
+				btgType.add( rb );
+		}
+		else
+		{
+			btgType    = null;
+			this.ensRb = null;
+		}
 
 		this.cbEntrer  = new JComboBox<>( Controleur.getDevises( type ) );
 		this.txtEntrer = new JTextField ( 20                            );
@@ -50,98 +74,48 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		/* Positionnement des composants */
 		/*-------------------------------*/
 
+		// Création et positionnement de notre panel avec les JTextfield et les JComboBox
 		panelSaisies = new JPanel( new GridLayout( 1, 3 ) );
 
 		panelSaisies.add( this.positionnementPanelSaisie( cbEntrer, txtEntrer           ) );
 		panelSaisies.add( new JLabel( "<html><h1>-></h1></html>", SwingConstants.CENTER ) );
 		panelSaisies.add( this.positionnementPanelSaisie( cbSortie, txtSortie           ) );
 
+		// Panel avec le bouton retour
 		panelBas = new JPanel();
 		panelBas.add( this.btnRetour );
 
+		/* --------- Catégories -------- */
+		if ( categories != null )
+		{
+			// Panel avec les choix des catégories avec les JRadioButton
+			panelChoix = new JPanel();
+
+			for ( JRadioButton rb : this.ensRb )
+				panelChoix.add( rb );
+
+			panelTmp = new JPanel( new GridLayout( 2, 1 ) );
+			panelTmp.add( panelChoix   );
+			panelTmp.add( panelSaisies );
+			
+			this.add( panelTmp , BorderLayout.CENTER );
+		}
+		else
+		{
+			this.add( panelSaisies , BorderLayout.CENTER );
+		}
+
 		this.add( lblTitre     , BorderLayout.NORTH  );
-		this.add( panelSaisies , BorderLayout.CENTER );
 		this.add( panelBas     , BorderLayout.SOUTH  );
 
 		/*-------------------------------*/
 		/* Activation des composants     */
 		/*-------------------------------*/
 
-		this.cbEntrer .addActionListener( this );
-		this.cbSortie .addActionListener( this );
-		this.txtEntrer.addActionListener( this );
-		this.btnRetour.addActionListener( this );
-	}
-
-	public PanelConvertisseur( Controleur ctrl, String titre, String type, boolean b )
-	{
-		ButtonGroup btgType;
-		JPanel panelChoix, panelSaisies, panelBas, panelTmp;
-		JLabel lblTitre;
-
-		this.ctrl = ctrl;
-
-		this.setLayout( new BorderLayout() );
-
-		/*-------------------------------*/
-		/* Création des composants       */
-		/*-------------------------------*/
-
-		lblTitre       = new JLabel( "<html><h1>" + titre + "</h1></html>" , SwingConstants.CENTER );
-
-		this.btnRetour = new JButton( "Retour" );
-
-		btgType = new ButtonGroup();
-
-		this.ensRb = new JRadioButton[ Controleur.getCategories( type ).length ];
-
-		for( int cpt = 0; cpt < this.ensRb.length; cpt++ )
-			this.ensRb[cpt] = new JRadioButton( Controleur.getCategories( type )[cpt] );
-
-		if ( this.ensRb.length > 0 ) this.ensRb[0].setSelected( true );
-
-		for ( JRadioButton rb : this.ensRb )
-			btgType.add( rb );
-
-		this.cbEntrer  = new JComboBox<>( Controleur.getDevises( type ) );
-		this.txtEntrer = new JTextField ( 20                            );
-		this.cbSortie  = new JComboBox<>( Controleur.getDevises( type ) );
-		this.txtSortie = new JTextField ( 20                            );
-
-		this.cbSortie.setSelectedIndex( 1 );
-		this.txtSortie.setEditable( false );
-		
-		/*-------------------------------*/
-		/* Positionnement des composants */
-		/*-------------------------------*/
-
-		panelChoix = new JPanel();
-
-		for ( JRadioButton rb : this.ensRb )
-			panelChoix.add( rb );
-
-		panelSaisies = new JPanel( new GridLayout( 1, 3 ) );
-
-		panelSaisies.add( this.positionnementPanelSaisie( cbEntrer, txtEntrer           ) );
-		panelSaisies.add( new JLabel( "<html><h1>-></h1></html>", SwingConstants.CENTER ) );
-		panelSaisies.add( this.positionnementPanelSaisie( cbSortie, txtSortie           ) );
-
-		panelBas = new JPanel();
-		panelBas.add( this.btnRetour );
-
-		panelTmp = new JPanel( new GridLayout( 2, 1 ) );
-		panelTmp.add( panelChoix   );
-		panelTmp.add( panelSaisies );
-
-		this.add( lblTitre , BorderLayout.NORTH  );
-		this.add( panelTmp , BorderLayout.CENTER );
-		this.add( panelBas , BorderLayout.SOUTH  );
-
-		/*-------------------------------*/
-		/* Activation des composants     */
-		/*-------------------------------*/
-		for ( JRadioButton rb : this.ensRb )
-			rb.addActionListener( this );
+		/* --------- Catégories -------- */
+		if ( categories != null )
+			for ( JRadioButton rb : this.ensRb )
+				rb.addActionListener( this );
 
 
 		this.cbEntrer .addActionListener( this );
