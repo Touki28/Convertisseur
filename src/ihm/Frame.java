@@ -9,7 +9,7 @@ import java.awt.GridLayout;
 
 public class Frame extends JFrame
 {
-	private JPanel             panelContenue;
+	private JPanel             panelPrincipale;
 	
 	private PanelMenu          panelMenu;
 	private PanelConvertisseur panelArgent;
@@ -26,7 +26,7 @@ public class Frame extends JFrame
 		/*-------------------------------*/
 		/* Création des composants       */
 		/*-------------------------------*/
-		this.panelContenue = new JPanel( new GridLayout( 3, 1 ) );
+		this.panelPrincipale  = new JPanel( new GridLayout( 3, 1 ) );
 
 		this.panelMenu        = new PanelMenu          ( ctrl                                                                 );
 		this.panelArgent      = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Argent"      );
@@ -37,10 +37,10 @@ public class Frame extends JFrame
 		/*-------------------------------*/
 		/* Positionnement des composants */
 		/*-------------------------------*/
-		this.panelContenue.add( new JPanel()   );
-		this.panelContenue.add( this.panelMenu );
+		this.panelPrincipale.add( new JPanel()   );
+		this.panelPrincipale.add( this.panelMenu );
 
-		this.add( this.panelContenue );
+		this.add( this.panelPrincipale );
 
 		this.setVisible( true );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -49,22 +49,22 @@ public class Frame extends JFrame
 	public void panelConvertisseur( String panel )
 	{
 		// Reset le contenue du panelPrincipale
-		this.panelContenue.removeAll();
+		this.panelPrincipale.removeAll();
 
-		this.panelContenue.setLayout( new FlowLayout() );
+		this.panelPrincipale.setLayout( new FlowLayout() );
 
-		switch ( panel ) //Suivant l'action demandé, ca place le bon panel
+		switch ( panel ) //Place le bon panel suivant l'option demandée
 		{
-			case "Argent"      ->{ this.panelContenue.add( this.panelArgent      ) ; }
-			case "Distance"    ->{ this.panelContenue.add( this.panelDistance    ) ; }
-			case "Temperature" ->{ this.panelContenue.add( this.panelTemperature ) ; }
-			case "Vitesse"     ->{ this.panelContenue.add( this.panelVitesse     ) ; }
+			case "Argent"      ->{ this.panelPrincipale.add( this.panelArgent      ) ; }
+			case "Distance"    ->{ this.panelPrincipale.add( this.panelDistance    ) ; }
+			case "Temperature" ->{ this.panelPrincipale.add( this.panelTemperature ) ; }
+			case "Vitesse"     ->{ this.panelPrincipale.add( this.panelVitesse     ) ; }
 
 			case "Menu"        ->
 			{
-				this.panelContenue.setLayout( new GridLayout( 3, 1 ) );
-				this.panelContenue.add( new JPanel()   );
-				this.panelContenue.add( this.panelMenu );
+				this.panelPrincipale.setLayout( new GridLayout( 3, 1 ) );
+				this.panelPrincipale.add      ( new JPanel    ()       );
+				this.panelPrincipale.add      ( this.panelMenu         );
 			}
 		}
 		this.majContenue();
@@ -73,7 +73,7 @@ public class Frame extends JFrame
 	// Met a jour le panelPrincipale
 	public void majContenue()
 	{
-		this.panelContenue.revalidate();
-		this.panelContenue.repaint   ();
+		this.panelPrincipale.revalidate();
+		this.panelPrincipale.repaint   ();
 	}
 }

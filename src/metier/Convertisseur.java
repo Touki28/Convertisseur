@@ -2,8 +2,10 @@ package src.metier;
 
 public class Convertisseur
 {
+	/* Catégories */
 	private static final String[] CATEGORIES_DISTANCE = new String[] { "Nautique", "Terrestre"            };
 	
+	/* Devises */
 	private static final String[] DEVISES_MONNAIE     = new String[] { "Euro"    , "Franc"                };
 	private static final String[] DEVISES_DISTANCE    = new String[] { "Miles"   , "KiloMètre"            };
 	private static final String[] DEVISES_TEMPERATURE = new String[] { "Celsius" , "Fahrenheit", "Kelvin" };
@@ -32,6 +34,7 @@ public class Convertisseur
 		}
 	}
 
+	/* Perfermet de faire les opérations et de renvoyer un résultat */
 	public double calculer( String type, double valeur )
 	{
 		double resultat = 0.0;

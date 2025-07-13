@@ -28,7 +28,7 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		JPanel      panelChoix, panelSaisies, panelBas, panelTmp;
 		JLabel      lblTitre;
 
-		// si pas de categories alors categories = null
+		// si pas de categories alors = null
 		categories = Controleur.getCategories( type );
 
 		this.ctrl = ctrl;
@@ -131,11 +131,11 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		panelRet = new JPanel( new GridLayout( 2, 1 ) );
 
 		panelTmp = new JPanel();
-		panelTmp.add( cb );
+		panelTmp.add( cb       );
 		panelRet.add( panelTmp );
 
 		panelTmp = new JPanel();
-		panelTmp.add( txt );
+		panelTmp.add( txt      );
 		panelRet.add( panelTmp );
 
 		return panelRet;
@@ -171,11 +171,11 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		if ( this.ensRb != null )
 		{
 			for ( JRadioButton rb : this.ensRb )
-			if ( e.getSource() == rb )
-			{
-				this.txtEntrer.setText( "" );
-				this.txtSortie.setText( "" );
-			}
+				if ( e.getSource() == rb )
+				{
+					this.txtEntrer.setText( "" );
+					this.txtSortie.setText( "" );
+				}
 		}
 
 		if ( e.getSource() == this.txtEntrer  )
@@ -184,28 +184,33 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 			String type = "";
 			try
 			{
+				//Ajoute le nom de la catégories au message si il y en a une
 				if ( this.ensRb != null )
 					for ( JRadioButton rb : this.ensRb )
 						if ( rb.isSelected() ) type += rb.getText() + "|";
 				
+				// Ajoute le nom au message des JComboBox en entrer et sortie
 				type += this.cbEntrer.getSelectedItem().toString() + "->" +
 				        this.cbSortie.getSelectedItem().toString();
 
+				// Remplace les ',' par des '.' pour pouvoir écrire soit des virgule ou des points sans problème
 				valeur = Double.parseDouble( this.txtEntrer.getText().replace( ',' , '.' ) );
 
+				// Formate l'affichage a 2chiffre après la virgule
 				this.txtSortie.setText( String.format( "%.2f", this.ctrl.calculer( type, valeur ) ) );
 			}
-			catch (NumberFormatException ex)
+			catch ( NumberFormatException ex ) //Erreur si la données entrer dans le JTextField n'est pas un nombre
 			{
 				JOptionPane.showMessageDialog( this, "Veuillez entrer un nombre valide.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE );
 			}
-			catch (Exception ex)
+			catch ( Exception ex ) //Sortie d'erreur par default ( pour le débuggage ou autre )
 			{
 				JOptionPane.showMessageDialog( this, "Une erreur est survenue.", "Erreur", JOptionPane.ERROR_MESSAGE );
 			}
 
 		}
 
+		// Demande à la frame par le controleur de réafficher le menu
 		if ( e.getSource() == this.btnRetour )
 		{
 			this.ctrl.panelConvertisseur( "Menu" );
