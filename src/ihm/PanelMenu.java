@@ -12,8 +12,8 @@ public class PanelMenu extends JPanel implements ActionListener
 {
 	private Controleur ctrl;
 	
-	private JList      lstChoix;
-	private JButton    btnChoix;
+	private JList<String> lstChoix;
+	private JButton       btnConfirmer;
 
 	public PanelMenu( Controleur ctrl )
 	{
@@ -26,13 +26,13 @@ public class PanelMenu extends JPanel implements ActionListener
 		/* Création des composants       */
 		/*-------------------------------*/
 
-		this.lstChoix = new JList<>    ( Controleur.getLibellerPanels() );
+		this.lstChoix = new JList<>( Controleur.getLibellerPanels() );
 		this.lstChoix.setSelectedIndex( 0 );
 		
 		spChoix       = new JScrollPane( this.lstChoix );
 		spChoix.setPreferredSize( new Dimension( 200, 100 ) );
 
-		this.btnChoix = new JButton( "Confirmation" );
+		this.btnConfirmer = new JButton( "Confirmation" );
 		
 		/*-------------------------------*/
 		/* Positionnement des composants */
@@ -41,7 +41,7 @@ public class PanelMenu extends JPanel implements ActionListener
 		panelTmp.setLayout( new BorderLayout() );
 
 		panelBtn = new JPanel();
-		panelBtn.add( this.btnChoix );
+		panelBtn.add( this.btnConfirmer );
 
 		panelTmp.add( spChoix , BorderLayout.CENTER );
 		panelTmp.add( panelBtn, BorderLayout.SOUTH  );
@@ -51,14 +51,14 @@ public class PanelMenu extends JPanel implements ActionListener
 		/* Activation des composants     */
 		/*-------------------------------*/
 
-		this.btnChoix.addActionListener( this );
+		this.btnConfirmer.addActionListener( this );
 	}
 
 	public void actionPerformed( ActionEvent e )
 	{
-		if ( e.getSource() == this.btnChoix )
+		if ( e.getSource() == this.btnConfirmer )
 		{
-			this.ctrl.panelConvertisseur( (String)this.lstChoix.getSelectedValue() );
+			this.ctrl.panelConvertisseur( this.lstChoix.getSelectedValue() );
 		}
 	}
 }
