@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
+import java.lang.reflect.Field;
+
 public class Frame extends JFrame
 {
 	private JPanel             panelPrincipale;
@@ -44,6 +46,18 @@ public class Frame extends JFrame
 
 		this.setVisible( true );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	}
+
+	public String[] getLibellerPanels()
+	{
+		Field [] fields = Frame.class.getDeclaredFields();
+		String[] sRet   = new String[fields.length];
+
+		for ( int cpt = 0; cpt < sRet.length; cpt++ )
+			if ( fields[cpt].getName() != "panelPrincipale" && fields[cpt].getName() != "panelMenu" )
+				sRet[cpt] = fields[cpt].getName();
+
+		return sRet;
 	}
 
 	public void panelConvertisseur( String panel )
