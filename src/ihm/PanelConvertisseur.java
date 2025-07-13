@@ -16,10 +16,10 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 
 	private JRadioButton[] ensRb;
 	
-	private JComboBox      cbEntrer;
-	private JTextField     txtEntrer;
-	private JComboBox      cbSortie;
-	private JTextField     txtSortie;
+	private JComboBox<String> cbEntrer;
+	private JTextField        txtEntrer;
+	private JComboBox<String> cbSortie;
+	private JTextField        txtSortie;
 
 	public PanelConvertisseur( Controleur ctrl, String titre, String type )
 	{
@@ -62,11 +62,12 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 			this.ensRb = null;
 		}
 
-		this.cbEntrer  = new JComboBox<>( Controleur.getDevises( type ) );
-		this.txtEntrer = new JTextField ( 20                            );
-		this.cbSortie  = new JComboBox<>( Controleur.getDevises( type ) );
-		this.txtSortie = new JTextField ( 20                            );
+		this.cbEntrer  = new JComboBox<String>( Controleur.getDevises( type ) );
+		this.txtEntrer = new JTextField       ( 20                            );
+		this.cbSortie  = new JComboBox<String>( Controleur.getDevises( type ) );
+		this.txtSortie = new JTextField       ( 20                            );
 
+		this.txtEntrer.setToolTipText("Saisissez la valeur à convertir");
 		this.cbSortie.setSelectedIndex( 1 );
 		this.txtSortie.setEditable( false );
 		
@@ -77,9 +78,9 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		// Création et positionnement de notre panel avec les JTextfield et les JComboBox
 		panelSaisies = new JPanel( new GridLayout( 1, 3 ) );
 
-		panelSaisies.add( this.positionnementPanelSaisie( cbEntrer, txtEntrer           ) );
+		panelSaisies.add( this.creerPanelSaisie( cbEntrer, txtEntrer           ) );
 		panelSaisies.add( new JLabel( "<html><h1>-></h1></html>", SwingConstants.CENTER ) );
-		panelSaisies.add( this.positionnementPanelSaisie( cbSortie, txtSortie           ) );
+		panelSaisies.add( this.creerPanelSaisie( cbSortie, txtSortie           ) );
 
 		// Panel avec le bouton retour
 		panelBas = new JPanel();
@@ -124,7 +125,7 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		this.btnRetour.addActionListener( this );
 	}
 
-	private JPanel positionnementPanelSaisie( JComboBox cb, JTextField txt )
+	private JPanel creerPanelSaisie( JComboBox<String> cb, JTextField txt )
 	{
 		JPanel panelTmp, panelRet;
 
@@ -163,20 +164,13 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 				}
 			}
 			
-			this.txtEntrer.setText( "" );
-			this.txtSortie.setText( "" );
+			this.resetChamps();
 		}
 
 
 		if ( this.ensRb != null )
-		{
 			for ( JRadioButton rb : this.ensRb )
-				if ( e.getSource() == rb )
-				{
-					this.txtEntrer.setText( "" );
-					this.txtSortie.setText( "" );
-				}
-		}
+				if ( e.getSource() == rb ) this.resetChamps();
 
 		if ( e.getSource() == this.txtEntrer  )
 		{
@@ -210,10 +204,18 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 
 		}
 
+
+
 		// Demande à la frame par le controleur de réafficher le menu
 		if ( e.getSource() == this.btnRetour )
 		{
 			this.ctrl.panelConvertisseur( "Menu" );
 		}
+	}
+
+	private void resetChamps()
+	{
+		this.txtEntrer.setText( "" );
+		this.txtSortie.setText( "" );
 	}
 }
