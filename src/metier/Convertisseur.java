@@ -15,7 +15,7 @@ public class Convertisseur
 	{
 		switch ( nom )
 		{
-			case "Argent"      ->{ return Convertisseur.DEVISES_MONNAIE     ; }
+			case "Monnaie"     ->{ return Convertisseur.DEVISES_MONNAIE     ; }
 			case "Distance"    ->{ return Convertisseur.DEVISES_DISTANCE    ; }
 			case "Temperature" ->{ return Convertisseur.DEVISES_TEMPERATURE ; }
 			case "Vitesse"     ->{ return Convertisseur.DEVISES_VITESSE     ; }

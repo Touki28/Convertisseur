@@ -8,13 +8,15 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Frame extends JFrame
 {
 	private JPanel             panelPrincipale;
 	
 	private PanelMenu          panelMenu;
-	private PanelConvertisseur panelArgent;
+	private PanelConvertisseur panelMonnaie;
 	private PanelConvertisseur panelDistance;
 	private PanelConvertisseur panelTemperature;
 	private PanelConvertisseur panelVitesse;
@@ -31,7 +33,7 @@ public class Frame extends JFrame
 		this.panelPrincipale  = new JPanel( new GridLayout( 3, 1 ) );
 
 		this.panelMenu        = new PanelMenu          ( ctrl                                                                 );
-		this.panelArgent      = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Argent"      );
+		this.panelMonnaie     = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Monnaie"      );
 		this.panelDistance    = new PanelConvertisseur ( ctrl, "Miles &lt;=&gt; KiloMètre"                    , "Distance"    );
 		this.panelTemperature = new PanelConvertisseur ( ctrl, "Celsius &lt;=&gt; Fahrenheit &lt;=&gt; Kelvin", "Temperature" );
 		this.panelVitesse     = new PanelConvertisseur ( ctrl, "Km/h &lt;=&gt; m/s &lt;=&gt; Noeuds"          , "Vitesse"     );
@@ -48,19 +50,19 @@ public class Frame extends JFrame
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	}
 
-	public String[] getLibellerPanels()
+	public static String[] getLibellerPanels()
 	{
 		Field [] fields = Frame.class.getDeclaredFields();
-		String[] sRet   = new String[fields.length];
+		List<String> sRet   = new ArrayList<String>();
 
-		for ( int cpt = 0; cpt < sRet.length; cpt++ )
-			if ( fields[cpt].getName() != "panelPrincipale" && fields[cpt].getName() != "panelMenu" )
-				sRet[cpt] = fields[cpt].getName();
+		for ( Field f : fields )
+			if ( f.getName() != "panelPrincipale" && f.getName() != "panelMenu" )
+				sRet.add( f.getName().replace( "panel" , "" ) );
 
-		return sRet;
+		return sRet.toArray( new String[0] );
 	}
 
-	public void panelConvertisseur( String panel )
+	public void afficherPanel( String panel )
 	{
 		// Reset le contenue du panelPrincipale
 		this.panelPrincipale.removeAll();
@@ -69,7 +71,7 @@ public class Frame extends JFrame
 
 		switch ( panel ) //Place le bon panel suivant l'option demandée
 		{
-			case "Argent"      ->{ this.panelPrincipale.add( this.panelArgent      ) ; }
+			case "Monnaie"     ->{ this.panelPrincipale.add( this.panelMonnaie     ) ; }
 			case "Distance"    ->{ this.panelPrincipale.add( this.panelDistance    ) ; }
 			case "Temperature" ->{ this.panelPrincipale.add( this.panelTemperature ) ; }
 			case "Vitesse"     ->{ this.panelPrincipale.add( this.panelVitesse     ) ; }

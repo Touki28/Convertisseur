@@ -4,67 +4,61 @@ import src.Controleur;
 
 import javax.swing.*;
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.*;
 
 public class PanelMenu extends JPanel implements ActionListener
 {
 	private Controleur ctrl;
 	
-	private JButton    btnArgent;
-	private JButton    btnDistance;
-	private JButton    btnTemperature;
-	private JButton    btnVitesse;
+	private JList      lstChoix;
+	private JButton    btnChoix;
 
 	public PanelMenu( Controleur ctrl )
 	{
+		JScrollPane spChoix;
+		JPanel      panelTmp, panelBtn;
+
 		this.ctrl = ctrl;
-		
-		this.setLayout( new GridLayout( 1, 4, 10, 10 ) );
-		
+
 		/*-------------------------------*/
 		/* Création des composants       */
 		/*-------------------------------*/
+
+		this.lstChoix = new JList<>    ( Controleur.getLibellerPanels() );
+		this.lstChoix.setSelectedIndex( 0 );
 		
-		this.btnArgent      = new JButton( "Argent"      );
-		this.btnDistance    = new JButton( "Distance"    );
-		this.btnTemperature = new JButton( "Temperature" );
-		this.btnVitesse     = new JButton( "Vitesse"     );
+		spChoix       = new JScrollPane( this.lstChoix );
+		spChoix.setPreferredSize( new Dimension( 200, 100 ) );
+
+		this.btnChoix = new JButton( "Confirmation" );
 		
 		/*-------------------------------*/
 		/* Positionnement des composants */
 		/*-------------------------------*/
-		
-		this.positionnementPanels( this.btnArgent       );
-		this.positionnementPanels( this.btnDistance     );
-		this.positionnementPanels( this.btnTemperature  );
-		this.positionnementPanels( this.btnVitesse      );
+		panelTmp = new JPanel();
+		panelTmp.setLayout( new BorderLayout() );
 
+		panelBtn = new JPanel();
+		panelBtn.add( this.btnChoix );
+
+		panelTmp.add( spChoix , BorderLayout.CENTER );
+		panelTmp.add( panelBtn, BorderLayout.SOUTH  );
+
+		this.add( panelTmp );
 		/*-------------------------------*/
 		/* Activation des composants     */
 		/*-------------------------------*/
-		this.btnArgent     .addActionListener( this );
-		this.btnDistance   .addActionListener( this );
-		this.btnTemperature.addActionListener( this );
-		this.btnVitesse    .addActionListener( this );
-	}
 
-	private void positionnementPanels( JButton b )
-	{
-		JPanel panelTmp;
-
-		panelTmp = new JPanel( new GridLayout( 3, 1 ) );
-		panelTmp.add( new JPanel() );
-		panelTmp.add( b );
-
-		this.add( panelTmp );
+		this.btnChoix.addActionListener( this );
 	}
 
 	public void actionPerformed( ActionEvent e )
 	{
-		if ( e.getSource() == this.btnArgent      ) this.ctrl.panelConvertisseur( "Argent"      );
-		if ( e.getSource() == this.btnDistance    ) this.ctrl.panelConvertisseur( "Distance"    );
-		if ( e.getSource() == this.btnTemperature ) this.ctrl.panelConvertisseur( "Temperature" );
-		if ( e.getSource() == this.btnVitesse     ) this.ctrl.panelConvertisseur( "Vitesse"     );
+		if ( e.getSource() == this.btnChoix )
+		{
+			this.ctrl.panelConvertisseur( (String)this.lstChoix.getSelectedValue() );
+		}
 	}
 }

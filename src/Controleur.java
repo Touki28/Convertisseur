@@ -14,10 +14,12 @@ public class Controleur
 		this.ihm    = new Frame        ( this );
 	}
 
-	public static String[] getDevises   ( String nom ){ return Convertisseur.getDevises   ( nom ) ; }
-	public static String[] getCategories( String nom ){ return Convertisseur.getCategories( nom ) ; }
+	/* Accesseurs */
+	public static String[] getDevises       ( String nom ){ return Convertisseur.getDevises       ( nom ) ; }
+	public static String[] getCategories    ( String nom ){ return Convertisseur.getCategories    ( nom ) ; }
+	public static String[] getLibellerPanels()            { return Frame        .getLibellerPanels()      ; }
 
-	public void panelConvertisseur( String panel ){ this.ihm.panelConvertisseur( panel ) ; }
+	public void panelConvertisseur( String panel ){ this.ihm.afficherPanel( panel ) ; }
 
 	public double calculer( String type, double valeur ){ return this.metier.calculer( type, valeur ) ; }
 
