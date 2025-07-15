@@ -15,10 +15,31 @@
 
 ---
 
-## 🖼️ Aperçu
+## 📁 Structure du projet
 
-![Aperçu de l'interface](screenshot.png)  
-*(Ajoutez une capture d’écran du programme ici)*
+├───class #Dossier avec les fichiers de compilation
+│   └───src
+│       │   Controleur.class
+│       │
+│       ├───ihm
+│       │       Frame.class
+│       │       PanelConvertisseur.class
+│       │       PanelMenu.class
+│       │
+│       └───metier
+│               Convertisseur.class
+│
+└───src # 
+    │   compile.list
+    │   Controleur.java
+    │
+    ├───ihm
+    │       Frame.java
+    │       PanelConvertisseur.java
+    │       PanelMenu.java
+    │
+    └───metier
+            Convertisseur.java
 
 ---
 
@@ -27,7 +48,6 @@
 ### Prérequis
 
 - Java 17 ou supérieur
-- Un IDE comme IntelliJ IDEA, Eclipse ou NetBeans (ou éditeur avec compilation manuelle)
 
 ### Compilation
 
