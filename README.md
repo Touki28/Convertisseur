@@ -17,28 +17,33 @@
 
 ## 📁 Structure du projet
 
-├───class #Dossier avec les fichiers de compilation
-│   └───src
-│       │   Controleur.class
-│       │
-│       ├───ihm
-│       │       Frame.class
-│       │       PanelConvertisseur.class
-│       │       PanelMenu.class
-│       │
-│       └───metier
-│               Convertisseur.class
+### 🧱 Architecture MVC
+
+Ce projet suit le modèle d’architecture **MVC (Modèle–Vue–Contrôleur)**, afin de structurer le code de manière claire et maintenable :
+
+- **Modèle (`metier`)** : Contient la logique de conversion (monnaie, température, vitesse, etc.). Exemple : `Convertisseur.java`.
+- **Vue (`ihm`)** : Composants graphiques créés avec Swing. Chaque panneau (`PanelArgent`, `PanelTemperature`, etc.) correspond à une vue dédiée à une catégorie de conversion.
+- **Contrôleur (`Controleur.java`)** : Sert de lien entre la vue et le modèle. Il capte les actions utilisateur, appelle les méthodes de conversion appropriées, et met à jour l’affichage.
+
+Cette architecture facilite :
+- La séparation des responsabilités
+- L’évolutivité (ajout de nouvelles unités ou vues)
+- La testabilité du code métier
+
+
+├───class # Dossier avec les fichiers de compilation
+│   └─── ...
 │
-└───src # 
-    │   compile.list
-    │   Controleur.java
+└───src # Dossier avec les fichiers sources
+    │   compile.list # Fichier de compilation 
+    │   Controleur.java # 🧭 Contrôleur – Fait le lien entre modèle et vue
     │
-    ├───ihm
+    ├───ihm # 🎨 Vue – Interface graphique (Java Swing)
     │       Frame.java
     │       PanelConvertisseur.java
     │       PanelMenu.java
     │
-    └───metier
+    └───metier # 🧠 Modèle – Logique métier (calculs, données)
             Convertisseur.java
 
 ---
