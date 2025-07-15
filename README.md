@@ -67,3 +67,8 @@ Puis exécute le Controleur.java avec la commande :
 ```bash
 java -cp class src.Controleur
 ```
+
+---
+
+## 🙋‍♂️ Auteur
+Développé par [Alexandre Lucas]
