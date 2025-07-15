@@ -31,20 +31,22 @@ Cette architecture facilite :
 - La testabilité du code métier
 
 
-├── class/                              # 📦 Dossier avec les fichiers compilés
-│   └── ...                             #    Fichiers .class correspondant au .java
+```text
+├── class/                          # 📦 Dossier avec les fichiers compilés
+│   └── ...                         #     Fichiers .class générés depuis .java
 │
-└── src/                                # 💻 Dossier avec les fichiers sources
-    │   compile.list                    # 🛠️ Liste des fichiers à compiler
-    │   Controleur.java                 # 🧭 Contrôleur – Fait le lien entre modèle et vue
+└── src/                            # 💻 Dossier avec les fichiers sources
+    │   compile.list                # 🛠️ Liste des fichiers à compiler
+    │   Controleur.java             # 🧭 Contrôleur – Fait le lien entre modèle et vue
     │
-    ├── ihm/                            # 🎨 Vue – Interface graphique (Java Swing)
-    │   ├── Frame.java                  #     Fenêtre principale
-    │   ├── PanelConvertisseur.java     #     Panel principal de conversion
-    │   └── PanelMenu.java              #     Menu de navigation
+    ├── ihm/                        # 🎨 Vue – Interface graphique (Java Swing)
+    │   ├── Frame.java              #     Fenêtre principale
+    │   ├── PanelConvertisseur.java #   Panel principal de conversion
+    │   └── PanelMenu.java          #     Menu de navigation
     │
-    └── metier/                         # 🧠 Modèle – Logique métier (calculs, données)
-        └── Convertisseur.java          #     Contient les formules de conversion
+    └── metier/                     # 🧠 Modèle – Logique métier (calculs, données)
+        └── Convertisseur.java      #     Contient les formules de conversion
+```
 
 ---
 
