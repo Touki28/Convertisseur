@@ -70,5 +70,12 @@ java -cp class src.Controleur
 
 ---
 
+
+## 📄 Licence
+
+Ce projet est sous licence [MIT](LICENSE).
+
+---
+
 ## 🙋‍♂️ Auteur
 Développé par [Alexandre Lucas]
