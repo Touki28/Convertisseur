@@ -50,13 +50,15 @@ Cette architecture facilite :
 
 ---
 
-## ⚙️ Lancer le projet
+## ⚙️ Compilation et lancement
 
 ### Prérequis
 
-- Java 17 ou supérieur
+- Java 17 ou supérieur installé et configuré dans le PATH.
 
-### Compilation
+### Compilation manuelle
+
+Depuis la racine du projet, lance cette commande pour compiler tous les fichiers `.java` listés dans `src/compile.list` :
 
 ```bash
-javac -d bin src/**/*.java
+javac -d class @src/compile.list
