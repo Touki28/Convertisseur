@@ -1,7 +1,7 @@
-./ihm/Frame.java
-./ihm/PanelConvertisseur.java
-./ihm/PanelMenu.java
+./src/ihm/Frame.java
+./src/ihm/PanelConvertisseur.java
+./src/ihm/PanelMenu.java
 
-./metier/Convertisseur.java
+./src/metier/Convertisseur.java
 
-./Controleur.java
+./src/Controleur.java
