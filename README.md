@@ -59,6 +59,11 @@ Cette architecture facilite :
 ### Compilation manuelle
 
 Depuis la racine du projet, lance cette commande pour compiler tous les fichiers `.java` listés dans `src/compile.list` :
-
 ```bash
 javac -d class @src/compile.list
+```
+
+Puis exécute le Controleur.java avec la commande :
+```bash
+java -cp class src.Controleur
+```
