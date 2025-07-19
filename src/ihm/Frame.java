@@ -4,18 +4,17 @@ import src.Controleur;
 
 import javax.swing.*;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Frame extends JFrame
 {
 	private JPanel             panelPrincipale;
 	
 	private PanelMenu          panelMenu;
+	private PanelLog           panelLog;
+	
 	private PanelConvertisseur panelMonnaie;
 	private PanelConvertisseur panelDistance;
 	private PanelConvertisseur panelTemperature;
@@ -24,8 +23,10 @@ public class Frame extends JFrame
 	public Frame( Controleur ctrl )
 	{
 		this.setTitle   ( "Convertisseur" );
-		this.setSize    ( 750, 500        );
-		this.setLocation(  20,  20        );
+		this.setSize    ( 1000, 500       );
+		this.setLocation(   20,  20       );
+
+		this.setLayout( new BorderLayout() );
 
 		/*-------------------------------*/
 		/* Création des composants       */
@@ -33,7 +34,9 @@ public class Frame extends JFrame
 		this.panelPrincipale  = new JPanel( new GridLayout( 3, 1 ) );
 
 		this.panelMenu        = new PanelMenu          ( ctrl                                                                 );
-		this.panelMonnaie     = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Monnaie"      );
+		this.panelLog         = new PanelLog           ( ctrl                                                                 );
+
+		this.panelMonnaie     = new PanelConvertisseur ( ctrl, "Euro &lt;=&gt; Francs"                        , "Monnaie"     );
 		this.panelDistance    = new PanelConvertisseur ( ctrl, "Miles &lt;=&gt; KiloMètre"                    , "Distance"    );
 		this.panelTemperature = new PanelConvertisseur ( ctrl, "Celsius &lt;=&gt; Fahrenheit &lt;=&gt; Kelvin", "Temperature" );
 		this.panelVitesse     = new PanelConvertisseur ( ctrl, "Km/h &lt;=&gt; m/s &lt;=&gt; Noeuds"          , "Vitesse"     );
@@ -44,22 +47,11 @@ public class Frame extends JFrame
 		this.panelPrincipale.add( new JPanel()   );
 		this.panelPrincipale.add( this.panelMenu );
 
-		this.add( this.panelPrincipale );
+		this.add( this.panelPrincipale, BorderLayout.CENTER );
+		this.add( this.panelLog       , BorderLayout.EAST   );
 
 		this.setVisible( true );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-	}
-
-	public static String[] getLibellerPanels()
-	{
-		Field [] fields = Frame.class.getDeclaredFields();
-		List<String> sRet   = new ArrayList<String>();
-
-		for ( Field f : fields )
-			if ( f.getName() != "panelPrincipale" && f.getName() != "panelMenu" )
-				sRet.add( f.getName().replace( "panel" , "" ) );
-
-		return sRet.toArray( new String[0] );
 	}
 
 	public void afficherPanel( String panel )
@@ -83,13 +75,21 @@ public class Frame extends JFrame
 				this.panelPrincipale.add      ( this.panelMenu         );
 			}
 		}
-		this.majContenue();
+		this.majPanelPrincipal();
 	}
 
 	// Met a jour le panelPrincipale
-	public void majContenue()
+	public void majPanelPrincipal()
 	{
 		this.panelPrincipale.revalidate();
 		this.panelPrincipale.repaint   ();
+	}
+
+	public void majPanelLog()
+	{
+		this.panelLog.majPanelLog();
+		
+		this.panelLog.revalidate();
+		this.panelLog.repaint   ();
 	}
 }

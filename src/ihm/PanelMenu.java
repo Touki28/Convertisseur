@@ -26,7 +26,7 @@ public class PanelMenu extends JPanel implements ActionListener
 		/* Création des composants       */
 		/*-------------------------------*/
 
-		this.lstChoix = new JList<>( Controleur.getLibellerPanels() );
+		this.lstChoix = new JList<>( Controleur.getLibConvertisseurs() );
 		this.lstChoix.setSelectedIndex( 0 );
 		
 		spChoix       = new JScrollPane( this.lstChoix );
@@ -37,6 +37,7 @@ public class PanelMenu extends JPanel implements ActionListener
 		/*-------------------------------*/
 		/* Positionnement des composants */
 		/*-------------------------------*/
+		
 		panelTmp = new JPanel();
 		panelTmp.setLayout( new BorderLayout() );
 
@@ -47,6 +48,7 @@ public class PanelMenu extends JPanel implements ActionListener
 		panelTmp.add( panelBtn, BorderLayout.SOUTH  );
 
 		this.add( panelTmp );
+
 		/*-------------------------------*/
 		/* Activation des composants     */
 		/*-------------------------------*/

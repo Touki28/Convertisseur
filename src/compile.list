@@ -1,5 +1,6 @@
 ./src/ihm/Frame.java
 ./src/ihm/PanelConvertisseur.java
+./src/ihm/PanelLog.java
 ./src/ihm/PanelMenu.java
 
 ./src/metier/Convertisseur.java

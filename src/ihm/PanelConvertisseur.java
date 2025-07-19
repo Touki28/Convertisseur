@@ -10,16 +10,16 @@ import java.awt.event.*;
 
 public class PanelConvertisseur extends JPanel implements ActionListener
 {
-	private Controleur     ctrl;
-	
-	private JButton        btnRetour;
+	private Controleur        ctrl;
 
-	private JRadioButton[] ensRb;
+	private JRadioButton[]    ensRb;
 	
 	private JComboBox<String> cbEntrer;
 	private JTextField        txtEntrer;
 	private JComboBox<String> cbSortie;
 	private JTextField        txtSortie;
+
+	private JButton           btnRetour;
 
 	public PanelConvertisseur( Controleur ctrl, String titre, String type )
 	{
@@ -40,7 +40,6 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		/*-------------------------------*/
 
 		lblTitre       = new JLabel ( "<html><h1>" + titre + "</h1></html>" , SwingConstants.CENTER );
-		this.btnRetour = new JButton( "Retour" );
 
 		/* --------- Catégories -------- */
 		if ( categories != null )
@@ -67,10 +66,12 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		this.cbSortie  = new JComboBox<String>( Controleur.getDevises( type ) );
 		this.txtSortie = new JTextField       ( 20                            );
 
-		this.txtEntrer.setToolTipText("Saisissez la valeur à convertir");
+		this.txtEntrer.setToolTipText( "Saisissez la valeur à convertir" );
 		this.cbSortie.setSelectedIndex( 1 );
 		this.txtSortie.setEditable( false );
 		
+		this.btnRetour = new JButton( "Retour" );
+
 		/*-------------------------------*/
 		/* Positionnement des composants */
 		/*-------------------------------*/
@@ -81,10 +82,6 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		panelSaisies.add( this.creerPanelSaisie( cbEntrer, txtEntrer           ) );
 		panelSaisies.add( new JLabel( "<html><h1>-></h1></html>", SwingConstants.CENTER ) );
 		panelSaisies.add( this.creerPanelSaisie( cbSortie, txtSortie           ) );
-
-		// Panel avec le bouton retour
-		panelBas = new JPanel();
-		panelBas.add( this.btnRetour );
 
 		/* --------- Catégories -------- */
 		if ( categories != null )
@@ -105,6 +102,11 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		{
 			this.add( panelSaisies , BorderLayout.CENTER );
 		}
+
+		// Panel avec le bouton retour
+		panelBas = new JPanel();
+		panelBas.add( this.btnRetour );
+
 
 		this.add( lblTitre     , BorderLayout.NORTH  );
 		this.add( panelBas     , BorderLayout.SOUTH  );
@@ -164,47 +166,18 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 				}
 			}
 			
-			this.resetChamps();
+			this.reinitChamps();
 		}
 
 
 		if ( this.ensRb != null )
 			for ( JRadioButton rb : this.ensRb )
-				if ( e.getSource() == rb ) this.resetChamps();
+				if ( e.getSource() == rb ) this.reinitChamps();
 
 		if ( e.getSource() == this.txtEntrer  )
 		{
-			double valeur;
-			String type = "";
-			try
-			{
-				//Ajoute le nom de la catégories au message si il y en a une
-				if ( this.ensRb != null )
-					for ( JRadioButton rb : this.ensRb )
-						if ( rb.isSelected() ) type += rb.getText() + "|";
-				
-				// Ajoute le nom au message des JComboBox en entrer et sortie
-				type += this.cbEntrer.getSelectedItem().toString() + "->" +
-				        this.cbSortie.getSelectedItem().toString();
-
-				// Remplace les ',' par des '.' pour pouvoir écrire soit des virgule ou des points sans problème
-				valeur = Double.parseDouble( this.txtEntrer.getText().replace( ',' , '.' ) );
-
-				// Formate l'affichage a 2chiffre après la virgule
-				this.txtSortie.setText( String.format( "%.2f", this.ctrl.calculer( type, valeur ) ) );
-			}
-			catch ( NumberFormatException ex ) //Erreur si la données entrer dans le JTextField n'est pas un nombre
-			{
-				JOptionPane.showMessageDialog( this, "Veuillez entrer un nombre valide.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE );
-			}
-			catch ( Exception ex ) //Sortie d'erreur par default ( pour le débuggage ou autre )
-			{
-				JOptionPane.showMessageDialog( this, "Une erreur est survenue.", "Erreur", JOptionPane.ERROR_MESSAGE );
-			}
-
+			this.saisie();
 		}
-
-
 
 		// Demande à la frame par le controleur de réafficher le menu
 		if ( e.getSource() == this.btnRetour )
@@ -213,7 +186,47 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		}
 	}
 
-	private void resetChamps()
+	private void saisie()
+	{
+		double valeur;
+		String resultat, calcul;
+		String type = "";
+		try
+		{
+			//Ajoute le nom de la catégories au message si il y en a une
+			if ( this.ensRb != null )
+				for ( JRadioButton rb : this.ensRb )
+					if ( rb.isSelected() ) type += rb.getText() + " | ";
+			
+			// Ajoute le nom au message des JComboBox en entrer et sortie
+			type += this.cbEntrer.getSelectedItem().toString() + " -> " +
+					this.cbSortie.getSelectedItem().toString();
+
+			// Remplace les ',' par des '.' pour pouvoir écrire soit des virgule ou des points sans problème
+			valeur = Double.parseDouble( this.txtEntrer.getText().replace( ',' , '.' ) );
+
+			// Formate l'affichage a 2chiffre après la virgule
+			resultat = String.format( "%.2f", Controleur.calculer( type, valeur ) );
+
+			//Affichage le résultat dans le TextField
+			this.txtSortie.setText( resultat );
+
+			calcul = this.txtEntrer.getText() + " -> " + resultat;
+
+			//Ajout au logs
+			this.ctrl.ajouterLog( type , calcul );
+		}
+		catch ( NumberFormatException ex ) //Erreur si la données entrer dans le JTextField n'est pas un nombre
+		{
+			JOptionPane.showMessageDialog( this, "Veuillez entrer un nombre valide.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE );
+		}
+		catch ( Exception ex ) //Sortie d'erreur par default ( pour le débuggage ou autre )
+		{
+			JOptionPane.showMessageDialog( this, "Une erreur est survenue.", "Erreur", JOptionPane.ERROR_MESSAGE );
+		}
+	}
+
+	private void reinitChamps()
 	{
 		this.txtEntrer.setText( "" );
 		this.txtSortie.setText( "" );

@@ -1,5 +1,11 @@
 package src.metier;
 
+import java.util.List;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+import java.io.*;
+
 public class Convertisseur
 {
 	/* Catégories */
@@ -10,6 +16,16 @@ public class Convertisseur
 	private static final String[] DEVISES_DISTANCE    = new String[] { "Miles"   , "KiloMètre"            };
 	private static final String[] DEVISES_TEMPERATURE = new String[] { "Celsius" , "Fahrenheit", "Kelvin" };
 	private static final String[] DEVISES_VITESSE     = new String[] { "Km/h"    , "m/s"       , "Noeuds" };
+
+	private static File fichier = new File( "./log.data" );
+
+	//Classe utilitaire – instanciation interdite
+	private Convertisseur(){} 
+
+	public static String[] getLibConvertisseurs()
+	{
+		return new String[] { "Monnaie", "Distance", "Temperature", "Vitesse" };
+	}
 
 	public static String[] getDevises( String nom )
 	{
@@ -35,35 +51,79 @@ public class Convertisseur
 	}
 
 	/* Perfermet de faire les opérations et de renvoyer un résultat */
-	public double calculer( String type, double valeur )
+	public static double calculer( String type, double valeur )
 	{
 		double resultat = 0.0;
 
 		switch ( type )
 		{
-			case "Euro->Franc"                ->{ resultat =     valeur * 6.55957               ; }
-			case "Franc->Euro"                ->{ resultat =     valeur / 6.55957               ; }
+			case "Euro -> Franc"                  ->{ resultat =     valeur * 6.55957               ; }
+			case "Franc -> Euro"                  ->{ resultat =     valeur / 6.55957               ; }
 
-			case "Nautique|KiloMètre->Miles"  ->{ resultat =     valeur * 0.539957              ; }
-			case "Nautique|Miles->KiloMètre"  ->{ resultat =     valeur / 0.539957              ; }
-			case "Terrestre|KiloMètre->Miles" ->{ resultat =     valeur * 0.621371              ; }
-			case "Terrestre|Miles->KiloMètre" ->{ resultat =     valeur / 0.621371              ; }
+			case "Nautique | KiloMètre -> Miles"  ->{ resultat =     valeur * 0.539957              ; }
+			case "Nautique | Miles -> KiloMètre"  ->{ resultat =     valeur / 0.539957              ; }
+			case "Terrestre | KiloMètre -> Miles" ->{ resultat =     valeur * 0.621371              ; }
+			case "Terrestre | Miles -> KiloMètre" ->{ resultat =     valeur / 0.621371              ; }
 
-			case "Celsius->Fahrenheit"        ->{ resultat = (   valeur * 1.8 ) + 32            ; }
-			case "Celsius->Kelvin"            ->{ resultat =     valeur + 273.15                ; }
-			case "Fahrenheit->Celsius"        ->{ resultat = (   valeur - 32 ) / 1.8            ; }
-			case "Fahrenheit->Kelvin"         ->{ resultat = ( ( valeur - 32 ) / 1.8 ) + 273.15 ; }
-			case "Kelvin->Celsius"            ->{ resultat =     valeur - 273.15                ; }
-			case "Kelvin->Fahrenheit"         ->{ resultat = ( ( valeur - 273.15 ) * 1.8 ) + 32 ; }
-
-			case "Km/h->m/s"                  ->{ resultat =     valeur / 3.6                   ; }
-			case "Km/h->Noeuds"               ->{ resultat =     valeur / 1.852                 ; }
-			case "m/s->Km/h"                  ->{ resultat =     valeur * 3.6                   ; }
-			case "m/s->Noeuds"                ->{ resultat =     valeur * 1.94384               ; }
-			case "Noeuds->Km/h"               ->{ resultat =     valeur * 1.852                 ; }
-			case "Noeuds->m/s"                ->{ resultat =     valeur / 1.94384               ; }
+			case "Celsius -> Fahrenheit"          ->{ resultat = (   valeur * 1.8 ) + 32            ; }
+			case "Celsius -> Kelvin"              ->{ resultat =     valeur + 273.15                ; }
+			case "Fahrenheit -> Celsius"          ->{ resultat = (   valeur - 32 ) / 1.8            ; }
+			case "Fahrenheit -> Kelvin"           ->{ resultat = ( ( valeur - 32 ) / 1.8 ) + 273.15 ; }
+			case "Kelvin -> Celsius"              ->{ resultat =     valeur - 273.15                ; }
+			case "Kelvin -> Fahrenheit"           ->{ resultat = ( ( valeur - 273.15 ) * 1.8 ) + 32 ; }
+  
+			case "Km/h -> m/s"                    ->{ resultat =     valeur / 3.6                   ; }
+			case "Km/h -> Noeuds"                 ->{ resultat =     valeur / 1.852                 ; }
+			case "m/s -> Km/h"                    ->{ resultat =     valeur * 3.6                   ; }
+			case "m/s -> Noeuds"                  ->{ resultat =     valeur * 1.94384               ; }
+			case "Noeuds -> Km/h"                 ->{ resultat =     valeur * 1.852                 ; }
+			case "Noeuds -> m/s"                  ->{ resultat =     valeur / 1.94384               ; }
 		}
 
 		return resultat;
+	}
+
+	public static String[] getLog()
+	{
+		List<String> lstLog = new ArrayList<String>();
+		Scanner      sc;
+
+		try
+		{
+			sc = new Scanner ( new FileInputStream ( Convertisseur.fichier ), "UTF8" );
+
+			while ( sc.hasNextLine() )
+				lstLog.add( sc.nextLine() );
+			
+		}
+		catch ( Exception e ) { e.printStackTrace(); }
+
+		return lstLog.toArray( new String[0] );
+	}
+
+	public static void ajouterLog( String type, String resultat )
+	{
+		PrintWriter pw;
+		
+		try
+		{
+			pw = new PrintWriter( new OutputStreamWriter( new FileOutputStream( Convertisseur.fichier, true ), "UTF8" ) );
+
+			pw.println( type + ":" );
+			pw.println( "   " + resultat );
+			pw.println();
+
+			pw.close();
+		}
+		catch ( Exception e ) { e.printStackTrace(); }
+	}
+
+	public static void supprimerLog()
+	{
+		try
+		{
+			new FileOutputStream( Convertisseur.fichier ).close();
+		}
+		catch (IOException e) { e.printStackTrace(); }
 	}
 }
