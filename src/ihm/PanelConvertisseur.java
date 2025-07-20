@@ -11,9 +11,8 @@ import java.awt.event.*;
 public class PanelConvertisseur extends JPanel implements ActionListener
 {
 	private Controleur        ctrl;
+	private String            type;
 
-	private JRadioButton[]    ensRb;
-	
 	private JComboBox<String> cbEntrer;
 	private JTextField        txtEntrer;
 	private JComboBox<String> cbSortie;
@@ -21,17 +20,13 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 
 	private JButton           btnRetour;
 
-	public PanelConvertisseur( Controleur ctrl, String titre, String type )
+	public PanelConvertisseur( Controleur ctrl, String type )
 	{
-		String[]    categories;
-		ButtonGroup btgType;
-		JPanel      panelChoix, panelSaisies, panelBas, panelTmp;
+		JPanel      panelSaisies, panelBas;
 		JLabel      lblTitre;
 
-		// si pas de categories alors = null
-		categories = Controleur.getCategories( type );
-
 		this.ctrl = ctrl;
+		this.type = type;
 
 		this.setLayout( new BorderLayout() );
 
@@ -39,27 +34,7 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		/* Création des composants       */
 		/*-------------------------------*/
 
-		lblTitre       = new JLabel ( "<html><h1>" + titre + "</h1></html>" , SwingConstants.CENTER );
-
-		/* --------- Catégories -------- */
-		if ( categories != null )
-		{
-			btgType    = new ButtonGroup();
-			this.ensRb = new JRadioButton[ categories.length ];
-
-			for( int cpt = 0; cpt < this.ensRb.length; cpt++ )
-				this.ensRb[cpt] = new JRadioButton( categories[cpt] );
-
-			if ( this.ensRb.length > 0 ) this.ensRb[0].setSelected( true );
-
-			for ( JRadioButton rb : this.ensRb )
-				btgType.add( rb );
-		}
-		else
-		{
-			btgType    = null;
-			this.ensRb = null;
-		}
+		lblTitre = new JLabel ( "<html><h1>" + type + "</h1></html>" , SwingConstants.CENTER );
 
 		this.cbEntrer  = new JComboBox<String>( Controleur.getDevises( type ) );
 		this.txtEntrer = new JTextField       ( 20                            );
@@ -84,24 +59,7 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		panelSaisies.add( this.creerPanelSaisie( cbSortie, txtSortie           ) );
 
 		/* --------- Catégories -------- */
-		if ( categories != null )
-		{
-			// Panel avec les choix des catégories avec les JRadioButton
-			panelChoix = new JPanel();
-
-			for ( JRadioButton rb : this.ensRb )
-				panelChoix.add( rb );
-
-			panelTmp = new JPanel( new GridLayout( 2, 1 ) );
-			panelTmp.add( panelChoix   );
-			panelTmp.add( panelSaisies );
-			
-			this.add( panelTmp , BorderLayout.CENTER );
-		}
-		else
-		{
-			this.add( panelSaisies , BorderLayout.CENTER );
-		}
+		this.add( panelSaisies , BorderLayout.CENTER );
 
 		// Panel avec le bouton retour
 		panelBas = new JPanel();
@@ -114,12 +72,6 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 		/*-------------------------------*/
 		/* Activation des composants     */
 		/*-------------------------------*/
-
-		/* --------- Catégories -------- */
-		if ( categories != null )
-			for ( JRadioButton rb : this.ensRb )
-				rb.addActionListener( this );
-
 
 		this.cbEntrer .addActionListener( this );
 		this.cbSortie .addActionListener( this );
@@ -169,11 +121,6 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 			this.reinitChamps();
 		}
 
-
-		if ( this.ensRb != null )
-			for ( JRadioButton rb : this.ensRb )
-				if ( e.getSource() == rb ) this.reinitChamps();
-
 		if ( e.getSource() == this.txtEntrer  )
 		{
 			this.saisie();
@@ -188,33 +135,25 @@ public class PanelConvertisseur extends JPanel implements ActionListener
 
 	private void saisie()
 	{
-		double valeur;
-		String resultat, calcul;
-		String type = "";
+		double valeur, resultat;
+		String calcul;
 		try
-		{
-			//Ajoute le nom de la catégories au message si il y en a une
-			if ( this.ensRb != null )
-				for ( JRadioButton rb : this.ensRb )
-					if ( rb.isSelected() ) type += rb.getText() + " | ";
-			
-			// Ajoute le nom au message des JComboBox en entrer et sortie
-			type += this.cbEntrer.getSelectedItem().toString() + " -> " +
-					this.cbSortie.getSelectedItem().toString();
-
+		{	
 			// Remplace les ',' par des '.' pour pouvoir écrire soit des virgule ou des points sans problème
 			valeur = Double.parseDouble( this.txtEntrer.getText().replace( ',' , '.' ) );
 
-			// Formate l'affichage a 2chiffre après la virgule
-			resultat = String.format( "%.2f", Controleur.calculer( type, valeur ) );
+			// Calcul le résultat avec ( type, uniteSrc, uniteDst, valeur )
+			resultat = Controleur.calculer( this.type, this.cbEntrer.getSelectedItem().toString(),
+			                                           this.cbSortie.getSelectedItem().toString(), valeur );
 
-			//Affichage le résultat dans le TextField
-			this.txtSortie.setText( resultat );
+			//Affichage le résultat dans le TextField au format a 2 chiffres après la virgule
+			this.txtSortie.setText( "" + resultat );
 
 			calcul = this.txtEntrer.getText() + " -> " + resultat;
 
 			//Ajout au logs
-			this.ctrl.ajouterLog( type , calcul );
+			this.ctrl.ajouterLog( this.cbEntrer.getSelectedItem().toString(),
+			                      this.cbSortie.getSelectedItem().toString(), calcul );
 		}
 		catch ( NumberFormatException ex ) //Erreur si la données entrer dans le JTextField n'est pas un nombre
 		{

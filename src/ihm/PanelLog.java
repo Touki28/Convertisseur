@@ -31,6 +31,7 @@ public class PanelLog extends JPanel implements ActionListener
 		this.majPanelLog(); //Rempli le JTextArea si besoin
 
 		spLog = new JScrollPane( this.txtLog );
+		spLog.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 
 		this.btnEffacer = new JButton( "Effacer" );
 
